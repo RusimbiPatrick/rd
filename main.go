@@ -5,6 +5,7 @@ import (
     "fmt"
     "log"
     "net/http"
+    "os"
 )
 
 type RequestBody struct {
@@ -29,7 +30,12 @@ func sumHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080" // default port
+    }
+
     http.HandleFunc("/sum", sumHandler)
-    log.Println("Server started on port 8080")
-    log.Fatal(http.ListenAndServe(":8080", nil))
+    log.Printf("Server started on port %s", port)
+    log.Fatal(http.ListenAndServe(":"+port, nil))
 }
